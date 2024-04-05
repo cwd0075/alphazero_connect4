@@ -21,3 +21,10 @@ code update from:
 https://github.com/cwd0075/alphazero/blob/main/alpha_tweaks_part7.py  
 https://github.com/cwd0075/alphazero/blob/main/alpha_tweaks_part7_colab.ipynb  
 
+code update:  
+update TicTacToe class to ConnectFour class  
+update the ResNet model size  
+update train arguments  
+
+
+
