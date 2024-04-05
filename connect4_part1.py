@@ -10,39 +10,56 @@ torch.manual_seed(0)
 from tqdm import tqdm
 import random 
 
-class TicTacToe:
+class ConnectFour:
     def __init__(self):
-        self.row_count = 3
-        self.column_count = 3
-        self.action_size = self.row_count * self.column_count
+        self.row_count = 6
+        self.column_count = 7
+        self.action_size = self.column_count
+        self.in_a_row = 4 
         
     def get_initial_state(self):
         return np.zeros((self.row_count, self.column_count))
     
     def get_next_state(self, state, action, player):
-        row = action // self.column_count
-        column = action % self.column_count
-        state[row, column] = player
+        ### the top row is index zero, 
+        ### so the place of action is the highest row of the action column
+        row = np.max(np.where(state[:, action] == 0))
+        state[row, action] = player
         return state
     
     def get_valid_moves(self, state):
-        return (state.reshape(-1) == 0).astype(np.uint8)
+        ### return all column index where row 0 is empty
+        return (state[0] == 0).astype(np.uint8)
     
     def check_win(self, state, action):
         if action == None:
             return False
         
-        row = action // self.column_count
-        column = action % self.column_count
-        player = state[row, column]
-        
+        row = np.min(np.where(state[:, action] != 0))
+        column = action
+        player = state[row][column]
+
+        def count(offset_row, offset_column):
+            for i in range(1, self.in_a_row):
+                r = row + offset_row * i
+                c = action + offset_column * i
+                if (
+                    r < 0 
+                    or r >= self.row_count
+                    or c < 0 
+                    or c >= self.column_count
+                    or state[r][c] != player
+                ):
+                    return i - 1
+            return self.in_a_row - 1
+
         return (
-            np.sum(state[row, :]) == player * self.column_count
-            or np.sum(state[:, column]) == player * self.row_count
-            or np.sum(np.diag(state)) == player * self.row_count
-            or np.sum(np.diag(np.flip(state, axis=0))) == player * self.row_count
+            count(1, 0) >= self.in_a_row - 1 # vertical
+            or (count(0, 1) + count(0, -1)) >= self.in_a_row - 1 # horizontal
+            or (count(1, 1) + count(-1, -1)) >= self.in_a_row - 1 # top left diagonal
+            or (count(1, -1) + count(-1, 1)) >= self.in_a_row - 1 # top right diagonal
         )
-    
+        
     def get_value_and_terminated(self, state, action):
         if self.check_win(state, action):
             return 1, True
@@ -314,32 +331,32 @@ class AlphaZero:
 
 
 def main():
-    tictactoe = TicTacToe()
+    game = ConnectFour()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     player = 1
 
     args = {
         'C': 2,
-        'num_searches': 1000,
-        'dirichlet_epsilon': 0.25,
+        'num_searches': 100,
+        'dirichlet_epsilon': 0.,
         'dirichlet_alpha': 0.3
     }
 
-    model = ResNet(tictactoe, 4, 64, device=device)
-    model.load_state_dict(torch.load('model_2.pt', map_location=device))
+    model = ResNet(game, 9, 128, device=device)
+    ## model.load_state_dict(torch.load('model_2.pt', map_location=device))
     model.eval()
-    mcts = MCTS(tictactoe, args, model)
+    mcts = MCTS(game, args, model)
 
-    state = tictactoe.get_initial_state()
+    state = game.get_initial_state()
 
 
     while True:
         print(state)
         
         if player == 1:
-            valid_moves = tictactoe.get_valid_moves(state)
-            print("valid_moves", [i for i in range(tictactoe.action_size) if valid_moves[i] == 1])
+            valid_moves = game.get_valid_moves(state)
+            print("valid_moves", [i for i in range(game.action_size) if valid_moves[i] == 1])
             action = int(input(f"{player}:"))
 
             if valid_moves[action] == 0:
@@ -347,13 +364,13 @@ def main():
                 continue
                 
         else:
-            neutral_state = tictactoe.change_perspective(state, player)
+            neutral_state = game.change_perspective(state, player)
             mcts_probs = mcts.search(neutral_state)
             action = np.argmax(mcts_probs)
             
-        state = tictactoe.get_next_state(state, action, player)
+        state = game.get_next_state(state, action, player)
         
-        value, is_terminal = tictactoe.get_value_and_terminated(state, action)
+        value, is_terminal = game.get_value_and_terminated(state, action)
         
         if is_terminal:
             print(state)
@@ -363,7 +380,7 @@ def main():
                 print("draw")
             break
             
-        player = tictactoe.get_opponent(player)
+        player = game.get_opponent(player)
 
 def test():
     
@@ -395,34 +412,39 @@ def test():
     print(value, policy)
 
 
-if __name__ == '__main__':
-    
+
+def train():    
     ### Start Training
-    tictactoe = TicTacToe()
+    game = ConnectFour()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = ResNet(tictactoe, 4, 64, device)
+    model = ResNet(game, 9, 128, device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.0001)
 
     args = {
         'C': 2,
-        'num_searches': 60,
-        'num_iterations': 3,
+        'num_searches': 600,
+        'num_iterations': 8,
         'num_selfPlay_iterations': 500,
         'num_epochs': 4,
-        'batch_size': 64,
+        'batch_size': 128,
         'temperature': 1.25,
         'dirichlet_epsilon': 0.25,
         'dirichlet_alpha': 0.3
     }
 
-    alphaZero = AlphaZero(model, optimizer, tictactoe, args)
+    alphaZero = AlphaZero(model, optimizer, game, args)
     alphaZero.learn()
 
+if __name__ == '__main__':
+    
+    ### train the model by selfplay
+    ### train()
+
     ### test the trained model
-    test()
+    ### test()
 
     ### play the actual game  
     main()
