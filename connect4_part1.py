@@ -443,7 +443,7 @@ if __name__ == '__main__':
     ### train the model by selfplay
     ### train()
 
-    ### test the trained model
+    ### test the trained model, not used in Connect4 
     ### test()
 
     ### play the actual game  
