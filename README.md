@@ -12,6 +12,9 @@ git push
 To run the code in Google Colab:  
 copy connect4_part1_colab.ipynb to Google Drive and run the cells  
 
+To do further training on current weight in Google Colab:  
+copy connect4_part1_colab_continue_training.ipynb to Google Drive and run the cells  
+
 To run the code in Github Codespaces:  
 Start Codespaces  
 pip install tqdm  
