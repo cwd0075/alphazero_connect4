@@ -78,6 +78,18 @@ code update from connect4_part1_colab.ipynb
 other modifications:  
 copy the changes in cwd0075/alphazero/alpha_tweaks_to_onnx_colab.ipynb  
 
+### Part 4 Running the Onnx Model on Javascript  
+To run:  
+Download https://github.com/cwd0075/connect4_gui_alphazero  
+Copy onnx_model.onnx, onnx.html and onnx_test.js to the connect4_gui_alphazero directory  
+Just run onnx.html on a local web server, in the browser inspect console panel to see the console.log output,  
+fail to run on local nodejs because it requires to use brower wasm  
+I run on VS Code Live Server locally (see Note: Setup javascript development environment on Windows)  
+
+code update:  
+code update and copy from cwd0075/alphazero/onnx_test.js  
+
+
 
 
 
