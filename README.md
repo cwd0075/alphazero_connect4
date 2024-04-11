@@ -68,6 +68,18 @@ Alpha parallel 83s
 Ray 0.2 GPU 91s 90s  
 Alpha parallel 89s  
 
+### Part 3 Convert to Onnx Model  
+To run the code in Google Colab:  
+copy connect4_part3_to_onnx_colab.ipynb to Google Drive and run all cells  
+onnx_model.onnx is the converted model from model_7_ConnectFour.pt  
+
+code update:  
+code update from connect4_part1_colab.ipynb  
+other modifications:  
+copy the changes in cwd0075/alphazero/alpha_tweaks_to_onnx_colab.ipynb  
+
+
+
 
   
 
