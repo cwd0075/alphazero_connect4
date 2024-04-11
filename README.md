@@ -34,6 +34,7 @@ To run the code in Google Colab:
 copy connect4_part2_Ray_colab.ipynb to Google Drive and run the cells  
 
 code update:  
+code update from connect4_part1_colab.ipynb  
 Ray cannot be used on Class function, so I convert Alphazero class function into normal function  
 https://stackoverflow.com/questions/64321153/how-to-use-ray-parallelism-within-a-class-in-python  
 
