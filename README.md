@@ -89,8 +89,12 @@ I run on VS Code Live Server locally (see Note: Setup javascript development env
 code update:  
 code update and copy from cwd0075/alphazero/onnx_test.js  
 
+### Part 5 MCTS vs Alphazero competition (MCTS_vs_Alphazero Folder)   
+MCTS_vs_Alphazero/connect4_Ray_selfplay_mcts_vs_Alphazero_colab.ipynb, using Ray 4x faster   
+MCTS_vs_Alphazero/connect4_selfplay_mcts_vs_Alphazero_colab.ipynb, without using Ray  
+50 games MCTS start first, 50 games AlphaZero start first  
 
-
+MCTS(10000 search) vs AlphaZero(100 search): MCTS_win: 44 / Draw: 15 / AlphaZero_win: 41  
 
 
   
