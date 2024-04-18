@@ -92,11 +92,10 @@ code update and copy from cwd0075/alphazero/onnx_test.js
 ### Part 5 MCTS vs Alphazero competition (MCTS_vs_Alphazero Folder)   
 MCTS_vs_Alphazero/connect4_Ray_selfplay_mcts_vs_Alphazero_colab.ipynb, using Ray 4x faster   
 MCTS_vs_Alphazero/connect4_selfplay_mcts_vs_Alphazero_colab.ipynb, without using Ray  
-50 games MCTS start first, 50 games AlphaZero start first  
 
-MCTS(10000 search) vs AlphaZero(100 search): MCTS_win: 44 / Draw: 15 / AlphaZero_win: 41  
-
-
+MCTS(10000 search) vs AlphaZero(100 search): MCTS_win: 44 / Draw: 15 / AlphaZero_win: 41  (50 games MCTS start first, 50 games AlphaZero start first)    
+MCTS(100000 search) vs AlphaZero(100 search): MCTS_win: 29 / Draw: 3 / AlphaZero_win: 8  (20 games MCTS start first, 20 games AlphaZero start first)  
+MCTS(100000 search) vs AlphaZero(600 search): MCTS_win: 9 / Draw: 0 / AlphaZero_win: 1  (1 GPU 1x RTX 3070 (15 cpu, $0.126) run 1600s on vast.ai)     
   
 
 
