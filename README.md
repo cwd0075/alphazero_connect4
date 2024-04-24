@@ -95,7 +95,14 @@ MCTS_vs_Alphazero/connect4_selfplay_mcts_vs_Alphazero_colab.ipynb, without using
 
 MCTS(10000 search) vs AlphaZero(100 search): MCTS_win: 44 / Draw: 15 / AlphaZero_win: 41  (50 games MCTS start first, 50 games AlphaZero start first)    
 MCTS(100000 search) vs AlphaZero(100 search): MCTS_win: 29 / Draw: 3 / AlphaZero_win: 8  (20 games MCTS start first, 20 games AlphaZero start first)  
-MCTS(100000 search) vs AlphaZero(600 search): MCTS_win: 9 / Draw: 0 / AlphaZero_win: 1  (1 GPU 1x RTX 3070 (15 cpu, $0.126) run 1600s on vast.ai)     
+MCTS(100000 search) vs AlphaZero(600 search): MCTS_win: 9 / Draw: 0 / AlphaZero_win: 1  (1 GPU 1x RTX 3070 (15 cpu, $0.126) run 1600s on vast.ai)    
+
+### Misc  
+AlphaZero benchmark against a perfect Connect 4 Solver  
+https://jonathan-laurent.github.io/AlphaZero.jl/dev/tutorial/connect_four/  
+
+Train the value and policy network using the perfect Connect 4 Solver dataset  
+https://www.kaggle.com/code/connect4alphazero/alphazero-baseline-connectx  
   
 
 
